@@ -1,0 +1,19 @@
+class Solution {
+    
+    public boolean isValidSerialization(String preorder) {
+        String str[]=preorder.split(",");
+        int s=1;
+        for(String st:str)
+        {
+           if(s<0 || s==0)
+           return false;
+           s--;
+           if(!st.equals("#"))
+           s=s+2;
+        }
+        return s==0;
+      }
+    }       
+
+        
+   
