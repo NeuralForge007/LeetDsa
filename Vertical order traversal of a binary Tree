@@ -1,0 +1,95 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    static class rootinfo{
+        TreeNode node;
+        int row;
+        int col;
+        rootinfo(TreeNode node,int row,int col)
+        {
+            this.node=node;
+            this.row=row;
+            this.col=col;
+           }
+        }
+        static class rowvalpair{
+            int row;
+            int val1;
+            rowvalpair(int row,int val1)
+            {
+                this.row=row;
+                this.val1=val1;
+            }
+        }
+
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        if(root==null)
+        return (new ArrayList<>());
+        
+        Map<Integer,List<rowvalpair>> m=new HashMap<>();
+        Queue<rootinfo> q=new LinkedList<>();
+        int max=0,min=0;
+        rootinfo n=new rootinfo(root,0,0);
+        q.offer(n);
+        while(!q.isEmpty())
+        {
+            rootinfo curr=q.poll();
+            m.putIfAbsent(curr.col,new ArrayList<>());
+            m.get(curr.col).add(new rowvalpair(curr.row,curr.node.val));
+             min=Math.min(min,curr.col);
+             max=Math.max(max,curr.col);
+
+
+            
+            if(curr.node.left!=null)
+            q.offer(new rootinfo(curr.node.left,curr.row+1,curr.col-1));
+            if(curr.node.right!=null)
+            q.offer(new rootinfo(curr.node.right,curr.row+1,curr.col+1));
+        }
+        List<List<Integer>> finale=new ArrayList<>();
+
+        for(int col1=min;col1<=max;col1++)
+        {
+          
+          List<rowvalpair> l=m.get(col1);
+
+
+            Collections.sort(l, (a, b) -> {
+                if (a.row != b.row)
+                 return a.row - b.row;
+                return a.val1 - b.val1;
+            });
+
+
+
+          List<Integer> l1=new ArrayList<>();
+          for(rowvalpair s:l){
+            l1.add(s.val1);
+          } 
+     
+            finale.add(l1);
+
+
+          }
+          
+           return finale;
+      }
+    }    
+
+        
+    
+   
